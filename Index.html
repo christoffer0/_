@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo do Amor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #ffe6e6;
+      margin: 0;
+      padding: 50px;
+    }
+    h1 {
+      color: #cc0066;
+    }
+    button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #mensagem {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #333;
+    }
+    #pedido {
+      display: none;
+      margin-top: 40px;
+      font-size: 28px;
+      color: #cc0066;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pedra, Papel ou Tesoura</h1>
+  <p>Escolha sua jogada:</p>
+  <button onclick="jogar('pedra')">Pedra</button>
+  <button onclick="jogar('papel')">Papel</button>
+  <button onclick="jogar('tesoura')">Tesoura</button>
+
+  <div id="mensagem"></div>
+  <div id="pedido">Você aceita namorar comigo?</div>
+
+  <script>
+    let vitorias = 0;
+
+    function jogar(jogador) {
+      const opcoes = ['pedra', 'papel', 'tesoura'];
+      const computador = opcoes[Math.floor(Math.random() * 3)];
+      const resultado = verificarResultado(jogador, computador);
+      let mensagem = `Você escolheu ${jogador}. O computador escolheu ${computador}. `;
+
+      if (resultado === 'ganhou') {
+        vitorias++;
+        mensagem += 'Você ganhou!';
+      } else if (resultado === 'perdeu') {
+        mensagem += 'Você perdeu!';
+      } else {
+        mensagem += 'Empate!';
+      }
+
+      mensagem += ` Vitórias: ${vitorias}`;
+      document.getElementById('mensagem').innerText = mensagem;
+
+      if (vitorias === 3) {
+        document.getElementById('pedido').style.display = 'block';
+      }
+    }
+
+    function verificarResultado(jogador, computador) {
+      if (jogador === computador) return 'empate';
+      if (
+        (jogador === 'pedra' && computador === 'tesoura') ||
+        (jogador === 'papel' && computador === 'pedra') ||
+        (jogador === 'tesoura' && computador === 'papel')
+      ) {
+        return 'ganhou';
+      }
+      return 'perdeu';
+    }
+  </script>
+</body>
+</html>
