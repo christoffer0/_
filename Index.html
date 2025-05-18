@@ -109,3 +109,10 @@
   </script>
 </body>
 </html>
+"""
+
+# Criar o ZIP
+with ZipFile("joguinho-do-amor.zip", "w") as zip_file:
+    zip_file.writestr("index.html", index_html)
+
+print("ZIP criado: joguinho-do-amor.zip")
