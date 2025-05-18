@@ -1,85 +1,110 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Jogo do Amor</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joguinho do Amor</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #ffe6e6;
+      font-family: 'Arial', sans-serif;
+      background: #ffe6e6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
-      padding: 50px;
+      text-align: center;
     }
+
     h1 {
-      color: #cc0066;
+      color: #d6336c;
     }
-    button {
-      margin: 10px;
-      padding: 15px 30px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #mensagem {
-      margin-top: 30px;
-      font-size: 18px;
-      color: #333;
-    }
-    #pedido {
+
+    #game, #proposal {
       display: none;
-      margin-top: 40px;
-      font-size: 28px;
-      color: #cc0066;
-      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 15px 25px;
+      font-size: 18px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ff1a4d;
+    }
+
+    #proposal {
+      font-size: 24px;
+      color: #d6336c;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .btn {
+        font-size: 16px;
+        padding: 12px 20px;
+      }
+      #proposal {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Pedra, Papel ou Tesoura</h1>
-  <p>Escolha sua jogada:</p>
-  <button onclick="jogar('pedra')">Pedra</button>
-  <button onclick="jogar('papel')">Papel</button>
-  <button onclick="jogar('tesoura')">Tesoura</button>
+  <h1>Joguinho do Amor</h1>
+  <p>Encontre o coração escondido!</p>
+  <button class="btn" onclick="startGame()">Começar</button>
 
-  <div id="mensagem"></div>
-  <div id="pedido">Você aceita namorar comigo?</div>
+  <div id="game">
+    <p>Onde está o coração?</p>
+    <div id="buttons"></div>
+  </div>
+
+  <div id="proposal">
+    <p>Você encontrou!</p>
+    <p>Quer namorar comigo?</p>
+    <button class="btn" onclick="alert('Ebaaaa!')">Sim!</button>
+  </div>
 
   <script>
-    let vitorias = 0;
+    function startGame() {
+      document.querySelector('button').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
 
-    function jogar(jogador) {
-      const opcoes = ['pedra', 'papel', 'tesoura'];
-      const computador = opcoes[Math.floor(Math.random() * 3)];
-      const resultado = verificarResultado(jogador, computador);
-      let mensagem = `Você escolheu ${jogador}. O computador escolheu ${computador}. `;
+      const buttonsDiv = document.getElementById('buttons');
+      buttonsDiv.innerHTML = '';
+      const total = 6;
+      const heartIndex = Math.floor(Math.random() * total);
 
-      if (resultado === 'ganhou') {
-        vitorias++;
-        mensagem += 'Você ganhou!';
-      } else if (resultado === 'perdeu') {
-        mensagem += 'Você perdeu!';
-      } else {
-        mensagem += 'Empate!';
+      for (let i = 0; i < total; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = 'Clique';
+        btn.onclick = () => {
+          if (i === heartIndex) {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('proposal').style.display = 'block';
+          } else {
+            btn.disabled = true;
+            btn.textContent = 'Não aqui';
+          }
+        };
+        buttonsDiv.appendChild(btn);
       }
-
-      mensagem += ` Vitórias: ${vitorias}`;
-      document.getElementById('mensagem').innerText = mensagem;
-
-      if (vitorias === 3) {
-        document.getElementById('pedido').style.display = 'block';
-      }
-    }
-
-    function verificarResultado(jogador, computador) {
-      if (jogador === computador) return 'empate';
-      if (
-        (jogador === 'pedra' && computador === 'tesoura') ||
-        (jogador === 'papel' && computador === 'pedra') ||
-        (jogador === 'tesoura' && computador === 'papel')
-      ) {
-        return 'ganhou';
-      }
-      return 'perdeu';
     }
   </script>
 </body>
